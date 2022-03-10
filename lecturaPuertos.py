@@ -38,3 +38,27 @@ print(type(datosDos[1]))
 
 ser.close()             # close port
 
+
+
+# def bin(dec):
+#     bina = ""
+#     while dec // 2 != 0:
+#         bina = str(dec % 2) + bina
+#         dec = dec // 2
+#     return str(dec) + bina
+
+
+
+# print(int(bin(9),2))
+zeros = 00000000
+n = int(bin(2),2)
+print(n)
+print(type(n))
+a = 0b1101
+b = 0b1011
+r = bin(a | b)
+
+print(type(a))
+print(type(b))
+
+

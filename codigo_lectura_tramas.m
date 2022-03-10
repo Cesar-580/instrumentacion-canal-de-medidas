@@ -13,11 +13,12 @@ g = 9.8; %[m/s2]
 
 while(x == 1)
     f = read(s,20,"uint8");
-
+    A1 = int2bit( f(4) , 8)';
+    A2 = int2bit( f(3) , 8)';
     %Lectura de la aceleración
         %Aceleración en X
         a_x_b = double([int2bit( f(4) , 8)',zeros(1,8)] | [zeros(1,8),int2bit( f(3) , 8)']);
-
+        
         %condicional negativo
         if(a_x_b(1) == 1)
             a_x_b = not(a_x_b);
