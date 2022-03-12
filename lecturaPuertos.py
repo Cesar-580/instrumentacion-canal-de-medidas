@@ -1,6 +1,7 @@
 # pip install pyserial
 
 # Importación de la libreria
+from ast import Not
 import serial
 
 
@@ -9,33 +10,14 @@ serial.Serial("COM9", 115200).close()
 
 # Inicia el puerto serial
 ser = serial.Serial('COM9',115200)
-# print(ser.name)         # check which port was really used
-# ser.write(b'hello')     # write a string
-
-#print(ser)
 
 x = 0
 
-#print("Trama uno")
+# Gravedad
+g = 9.8
 
-# Lista almacenadora de los datos
-            # cadenaHexadecimal = []
-
-            # print("Trama uno")
-            # while x < 21:
-            #     datosLeidos = ser.read()
-            #     datos = datosLeidos
-            #     #print(x)
-            #     #print(datos)
-            #     print(f'{datos:0>8b}', end=' ')
-            #     #print(type(datos))
-            #     x+= 1
-
-            # print(cadenaHexadecimal)
 
 datosLeidos = ser.read(21)
-# for i in range(0,21):
-#     print(datosLeidos[i])
 
 def binar(dec):
     bina = ""
@@ -48,45 +30,113 @@ def completarCeros(nBinario):
     nBinario = nBinario.zfill(8)
     return nBinario
 
+def inverso(nNegativo):
+    l = ""
+    for i in nNegativo:
+        if i == "1":
+            l = l + "0"
+        else:
+            l = l + "1"
+    return l
+
+        
+
 tramaDecimal = [datosLeidos[i] for i in range(0,21)]
 # print(tramaDecimal)
 tramaBinaria = list(map(binar, tramaDecimal))
-print(tramaBinaria)
+#print(tramaBinaria)
 tramaBinariaCompleto = list(map(completarCeros, tramaBinaria))
 print(tramaBinariaCompleto)
 
+Ax = tramaBinariaCompleto[3]+tramaBinariaCompleto[2]
+Ay = tramaBinariaCompleto[5]+tramaBinariaCompleto[4]
+Az = tramaBinariaCompleto[7]+tramaBinariaCompleto[6]
+Wx = tramaBinariaCompleto[9]+tramaBinariaCompleto[8]
+Wy = tramaBinariaCompleto[11]+tramaBinariaCompleto[10]
+Wz = tramaBinariaCompleto[13]+tramaBinariaCompleto[12]
+R = tramaBinariaCompleto[15]+tramaBinariaCompleto[14]
+P = tramaBinariaCompleto[17]+tramaBinariaCompleto[16]
+Y = tramaBinariaCompleto[19]+tramaBinariaCompleto[18]
 
+# ------------------------ Aceleración en X ------------------------
 
-#print(len(cadenaHexadecimal))
-#print(int((cadenaHexadecimal[1]),2))
+print("Ax")
+if Ax[0] == "1":
+    Ax_r = inverso(Ax)
+    Ax_r = int(Ax_r,2)
+    Ax_r = Ax_r*((16*g)/32768)*-1
+    #print(Ax)
+    print(Ax_r)
+else:
+    print(Ax)
+    Ax_r = int(Ax,2)
+    Ax_r = Ax_r*((16*g)/32768)
+    print(Ax_r)
 
-#datosLeidosDos = ser.read(20)
-#datosDos = datosLeidosDos
-# datosDos = (datosDos[1:-1])
+# ------------------------ Aceleración en Y ------------------------
 
-# for i in range(0,19):
-#     print(datosDos[i])
+print("Ay")
+if Ay[0] == "1":
+    Ay_r = inverso(Ay)
+    Ay_r = int(Ay_r,2)
+    Ay_r = Ay_r*((16*g)/32768)*-1
+    print(Ay_r)
+else:
+    Ay_r = int(Ay,2)
+    Ay_r = Ay_r*((16*g)/32768)
+    print(Ay_r)
 
+# ------------------------ Aceleración en Z ------------------------
 
-#print(datosDos)
-#print(datosDos[1])
-#print("TIPOSSSSSSSSSSSSSSSSSSSSSSSS")
-#print(type(datosDos))
-#print(datosDos[5])
+print("Az")
+if Az[0] == "1":
+    Az_r = inverso(Az)
+    Az_r = int(Az_r,2)
+    Az_r = Az_r*(180/32768)*-1
+    print(Az_r)
+else:
+    Az_r = int(Az,2)
+    Az_r = Az_r*(180/32768)
+    print(Az_r)
 
-a = bin(2)
-b = bin(2)
+# ------------------------ Lectura Roll ------------------------
 
-#print(type(a))
+print("R")
+if R[0] == "1":
+    R_r = inverso(R)
+    R_r = int(R_r,2)
+    R_r = R_r*(180/32768)*-1
+    print(R_r)
+else:
+    R_r = int(R,2)
+    R_r = R_r*(180/32768)
+    print(R_r)
 
-# r = a[2:] + b[2:]
-# print(type(r))
-# r = r.zfill(8)
-# print(type(int(r,2)))
-# print(bin(int(r,2)))
-# print(int(r,2))
+# ------------------------ Lectura Pitch ------------------------
 
+print("P")
+if P[0] == "1":
+    P_r = inverso(P)
+    P_r = int(P_r,2)
+    P_r = P_r*(180/32768)*-1
+    print(P_r)
+else:
+    P_r = int(P,2)
+    P_r = P_r*(180/32768)
+    print(P_r)
 
+# ------------------------ Lectura Yaw ------------------------
+
+print("Y")
+if Y[0] == "1":
+    Y_r = inverso(Y)
+    Y_r = int(Y_r,2)
+    Y_r = Y_r*(180/32768)*-1
+    print(Y_r)
+else:
+    Y_r = int(Y,2)
+    Y_r = Y_r*(180/32768)
+    print(Y_r)
 
 ser.close()             # close port
 
