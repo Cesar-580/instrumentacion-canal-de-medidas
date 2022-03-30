@@ -1,4 +1,4 @@
-double peso;
+int peso;
 
 
 void setup() {
